@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<title>Body</title>
+		<meta charset="utf-8">
+		<style type="text/css">
+			@font-face {
+			  font-family: 'Effra';
+			  src: url('fonts/Effra_Std_Rg.ttf');
+			}
+
+			@font-face {
+			  font-family: 'Effra Heavy';
+			  src: url('fonts/Effra_Std_He.ttf');
+			}
+			body { background-color: #000000; margin: 0px; overflow: hidden; font-family: "Effra";}
+			a { color:#0078ff; }
+			.slice {
+			    border-radius: 100px;
+			}
+			div {
+				padding: 20px;
+				margin: 20px;
+				float: left;
+			}
+			text { font-size: 11px; }
+			}
+			.ticks {
+			  font: 10px sans-serif;
+			}
+
+			.track,
+			.track-inset,
+			.track-overlay {
+			  stroke-linecap: round;
+			}
+
+			.track {
+			  stroke: white;
+			  stroke-opacity: 0.3;
+			  stroke-width: 10px;
+			}
+
+			.track-inset {
+			  stroke: #ddd;
+			  stroke-width: 8px;
+			}
+
+			.track-overlay {
+			  pointer-events: stroke;
+			  stroke-width: 50px;
+			  stroke: transparent;
+			  cursor: crosshair;
+			}
+
+			.handle {
+			  fill: #fff;
+			  stroke: white;
+			  stroke-opacity: 0.5;
+			  stroke-width: 1.25px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="svg"></div>
+		<div id="svgL"></div>
+
+		<div id="container"></div>
+		<!-- D3 Library --> <script src="js/d3.v4.min.js"></script>
+    <!-- D3-Tip --> <script src="js/d3-tip.js"></script>
+		<script type="text/javascript" src="js/three.min.js"></script>
+		<script type="text/javascript" src="js/Detector.js"></script>
+		<script type="text/javascript" src="js/stats.min.js"></script>
+    	<script type="text/javascript" src="https://cdn.rawgit.com/mrdoob/three.js/r69/examples/js/loaders/ColladaLoader.js"></script>
+
+		<script type="text/javascript" src="js/RequestAnimationFrame.js"></script>
+
+		<script type="text/javascript">
+
+			init();
+
+			function init() {
+
+        		var svg = d3.select('#svg').append("svg")
+        				.attr("width", 400)
+     					.attr("height", 500)
+     					.style("overflow", "visible");
+
+     			var svg1 = d3.select('#svgL').append("svg")
+        				.attr("width", 400)
+     					.attr("height", 500)
+     					.style("overflow", "visible");
+
+     		    var A = []; 
+     			for (i = 0; i< 100; i++) {
+     				svg.append("rect")
+     					.attr("id", "id" + i)
+     					.attr("width", 40)
+     					.attr("height", 40)
+     					.style("fill", "orange")
+     					.attr("x", Math.floor(Math.random()*10)*40 + 200)
+     					.attr("y", Math.floor(Math.random()*10)*40 + 200)
+     					.on("click", function(){
+     						var tempid = this.getAttribute("id");
+     						var tempx = +d3.select("#" + tempid).attr("x") + 20;
+     						var tempy = +d3.select("#" + tempid).attr("y") + 20;
+
+     						svg.append("circle")
+     							.attr("cx", +tempx)
+     							.attr("cy", +tempy)
+     							.attr("r", 5)
+     							.style("fill", "red")
+     							.style("opacity")
+
+     						A.forEach(function(d){
+
+     							if ((Math.abs(tempx - d.x) == 40 && Math.abs(tempy - d.y) == 0)|| (Math.abs(tempy - d.y) == 40 && Math.abs(tempx - d.x) == 0)){
+     								console.log(Math.abs(tempx - d.x))
+     								svg.append("line")
+     									.attr("x1", d.x)
+     									.attr("x2", tempx)
+     									.attr("y1", d.y)
+     									.attr("y2", tempy)
+     									.style("stroke", "red")
+     									.style("stroke-width", 2)
+     							}
+     						})
+
+     						A.push({"x": +tempx, "y": +tempy})
+     					})
+     			}
+     		}
+
+			
+
+		</script>
+	</body>
+</html>
